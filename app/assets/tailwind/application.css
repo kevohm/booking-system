@@ -1,0 +1,54 @@
+@import "tailwindcss";
+
+.btn{
+  @apply px-3 py-2 rounded;
+}
+.btn-primary {
+  @apply bg-indigo-500 text-white;
+}
+.btn-primary-outline {
+  @apply text-indigo-500 bg-white border border-indigo-500;
+}
+.btn-primary:hover,  .btn-primary-outline:hover{
+  @apply bg-indigo-700 text-white;
+}
+.btn-secondary {
+  @apply bg-slate-500 text-white;
+}
+.btn-secondary:hover {
+  @apply bg-slate-700 text-white;
+}
+.btn-warning{
+  @apply bg-orange-500 text-white;
+}
+.btn-warning:hover {
+  @apply bg-orange-700 text-white;
+}
+.btn-success{
+  @apply bg-emerald-500 text-white;
+}
+.btn-success:hover{
+  @apply bg-emerald-700 text-white;
+}
+
+input{
+ @apply   px-3 py-2 block w-full rounded-md border border-gray-300 focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm
+}
+
+label{
+   @apply block text-sm font-medium text-gray-700
+}
+
+.input-holder{
+    @apply w-full flex flex-col space-y-2.5
+}
+
+.badge{
+  @apply px-2 py-1 text-sm rounded-lg
+}
+.badge-warning{
+  @apply border border-amber-500/25 bg-amber-500/10 text-amber-500
+}
+.badge-success{
+  @apply border border-emerald-500/25 bg-emerald-500/10 text-emerald-500
+}

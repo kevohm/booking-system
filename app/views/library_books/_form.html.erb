@@ -1,0 +1,33 @@
+<%= form_with(model: library_book, local: true, class: "w-full max-w-[500px] flex flex-col space-y-5") do |form| %>
+
+  <% if library_book.errors.any? %>
+    <div id="error_explanation" class="bg-red-50 text-red-600 p-4 rounded-lg w-full">
+      <h2 class="font-bold text-lg"><%= pluralize(library_book.errors.count, "error") %> prohibited this book from being saved:</h2>
+      <ul class="list-disc pl-5 mt-2">
+        <% library_book.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <div class="input-holder">
+    <%= form.label :title, class: "" %>
+    <%= form.text_field :title, class: "" %>
+  </div>
+
+  <div class="input-holder">
+    <%= form.label :author, class: "" %>
+    <%= form.text_field :author, class: "" %>
+  </div>
+
+  <div class="input-holder">
+    <%= form.label :isbn, class: "" %>
+    <%= form.text_field :isbn, class: "" %>
+  </div>
+
+  <div class="actions w-full">
+    <%= form.submit class: "btn btn-primary bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" %>
+  </div>
+
+<% end %>

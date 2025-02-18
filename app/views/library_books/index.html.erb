@@ -1,0 +1,70 @@
+<main class="flex flex-col space-y-5 w-full">
+
+<div class="border-b border-slate-200 text-black px-6 md:px-12 py-5 flex items-center justify-between">
+
+<h1 class="text-xl font-bold">Library Books</h1>
+<%= link_to "Profile", profile_path, class: "btn btn-primary" %>
+
+</div>
+
+<section class="w-full flex flex-col space-y-5 px-6 md:px-12">
+  <section class="w-full flex flex-col space-y-5">
+<div class="flex items-center justify-between">
+<h1 class="text-xl font-bold">
+ Available Books
+</h1>
+
+<%= link_to "Add New Book", new_library_book_path, class: "btn btn-primary" %>
+</div>
+  <table class="w-full border-collapse rounded overflow-hidden ">
+  <thead>
+    <tr class="bg-gray-100 border border-slate-200 text-black">
+      <th class="px-4 py-2 text-left">Title</th>
+      <th class="px-4 py-2 text-left">Author</th>
+      <th class="px-4 py-2 text-left">ISBN</th>
+      <th class="px-4 py-2 text-left">Availability</th>
+      <th class="px-4 py-2 text-center">Actions</th>
+    </tr>
+  </thead>
+  
+  <tbody class="bg-white divide-y divide-gray-200">
+  <% if @library_books.presence %>
+    <% @library_books.each do |book| %>
+      <tr class="transition border-b border-slate-200 even:bg-slate-50">
+        <td class="px-4 py-2 border-l border-slate-200"><%= book.title %></td>
+        <td class="px-4 py-2"><%= book.author %></td>
+        <td class="px-4 py-2"><%= book.isbn %></td>
+        <td class="px-4 py-2">
+          <% if book.available? %>
+          <button class="badge badge-success">
+            Available
+          </button>
+          <% else %>
+          <button class="badge badge-warning">
+            Borrowed
+          </button>
+          <% end %>
+        </td>
+        <td class="px-4 py-2 place-items-center border-r border-slate-200">
+          <span class="w-max flex items-center space-x-2.5">
+          <%= link_to "Show", library_book_path(book), class: "btn btn-secondary" %>
+          <%= link_to "Edit", edit_library_book_path(book), class: "btn btn-primary" %>
+          <%= button_to "Delete", destroy_library_book_path(book), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-warning" %>
+          </span>
+        </td> 
+      </tr>
+    <% end %>
+     <% else %>
+     <tr class="hover:bg-gray-50 transition">
+	  	<td class="px-4 py-2 h-50 font-bold text-xl text-slate-500 text-center" colspan="5">No data yet</td>
+     </tr>
+  	<% end %>
+  </tbody>
+</table>
+	 
+
+
+</section>
+
+</main>
+
