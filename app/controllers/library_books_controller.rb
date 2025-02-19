@@ -3,7 +3,11 @@ class LibraryBooksController < ApplicationController
 
   def index
     @library_books = LibraryBook.all
-    logger.debug("Current User: #{current_user.role}")
+    if params[:query].present?
+      search_term = "%#{params[:query].downcase}%"
+      @library_books = @library_books.where("LOWER(title) LIKE ? OR LOWER(author) LIKE ?", search_term, search_term)
+    end
+    # logger.debug("Current User: #{current_user.role}")
     @library_books = @library_books.where("title LIKE ?", "%#{params[:title]}%") if params[:title].present?
     @library_books = @library_books.where("author LIKE ?", "%#{params[:author]}%") if params[:author].present?
   end

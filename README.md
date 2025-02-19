@@ -1,5 +1,10 @@
 # README
 
+# Docs
+First run `git clone <repo url>`
+then run `./bin/dev s` to spin up dev server
+then run `RAILS_ENV=test rails db:migrate` to run test 
+# Notes
 This README would normally document whatever steps are necessary to get the
 application up and running.
 

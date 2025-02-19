@@ -29,7 +29,7 @@ Rails.application.routes.draw do
   delete "/borrowings/:id", to: "borrowings#destroy", as: :destroy_borrowings
   get "borrowings/index", to: "borrowings#index"
 
-  delete "signup", to: "user#create"
+  post "signup", to: "user#create", as: :create_user
   get "dashboard", to: "library_books#index"
   get "profile", to: "pages#profile"
   # Defines the root path route ("/")

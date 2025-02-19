@@ -12,13 +12,14 @@ class UserController < ApplicationController
       start_new_session_for @user
       redirect_to after_authentication_url, notice: "Welcome, #{@user.email_address}!"
     else
-      redirect_to new_session_path, warn: "Account creation failed"
+      # flash.now[:alert] = "Account creation failed. Please fix the errors below."
+      render :new, alert: "Account creation failed. Please fix the errors below."
     end
   end
 
   private
 
   def user_params
-    params.permit(:email_address, :password, :password_confirmation, :role)
+    params.permit(:email_address, :password, :password_confirmation)
   end
 end

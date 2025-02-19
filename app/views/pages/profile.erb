@@ -1,73 +1,79 @@
 <main class="flex flex-col space-y-5 w-full">
 
-<div class="border-b border-slate-200 text-black px-6 py-5 flex items-center justify-between">
+  <div class="border-b border-slate-200 text-black px-6 py-5 flex items-center justify-between">
+    <h1 class="text-xl font-bold">
+      <%= Current.user.email_address %>
+    </h1>
+    <%= button_to "logout", destroy_session_path, method: :delete, class: "btn btn-warning" %>
+  </div>
 
-<h1 class="text-xl font-bold">
-  <%= Current.user.email_address%>
-</h1>
+  <section class="w-full flex flex-col space-y-5 p-12">
+    <div class="flex items-center justify-between">
+      <h1 class="text-xl font-bold">Your Catalogue</h1>
+      <%= link_to "View available books", library_books_path, class: "btn btn-primary" %>
+    </div>
 
-<%= button_to "logout", destroy_session_path, method: :delete, class: "btn btn-warning" %>
+    <table class="w-full border-collapse rounded overflow-hidden">
+      <thead>
+        <tr class="bg-gray-100 border border-slate-200 text-black">
+          <th class="px-4 py-2 text-left">Title</th>
+          <th class="px-4 py-2 text-left">Author</th>
+          <th class="px-4 py-2 text-left">ISBN</th>
+          <th class="px-4 py-2 text-left">Due Date</th> <!-- Added Due Date Column -->
+          <th class="px-4 py-2 text-left">Availability</th>
+          <th class="px-4 py-2 text-center">Actions</th>
+        </tr>
+      </thead>
 
-</div>
-
-<section class="w-full flex flex-col space-y-5 p-12">
-<div class="flex items-center justify-between">
-<h1 class="text-xl font-bold">
- Your Catalogue
-</h1>
-
-<%= link_to "View availble books", library_books_path, class: "btn btn-primary" %>
-</div>
+      <tbody class="bg-white divide-y divide-gray-200">
+        <% if @borrowings.presence %>
+          <% @borrowings.each do |borrowing| %>
+           <% 
+              book = borrowing.library_book 
+              is_overdue = borrowing.due_date.present? && borrowing.due_date < Time.current && !borrowing.returned?
+            %>
+            <tr class="transition border-b border-slate-200 even:bg-slate-50">
+              <td class="px-4 py-2 border-l border-slate-200"><%= book.title %></td>
+              <td class="px-4 py-2"><%= book.author %></td>
+              <td class="px-4 py-2"><%= book.isbn %></td>
+              <td class="px-4 py-2 <%= is_overdue ? 'text-red-500 font-bold' : '' %>">
+  <% if borrowing.due_date.present? %>
+    <% days_left = (borrowing.due_date.to_date - Date.current).to_i %>
     
-  <table class="w-full border-collapse rounded overflow-hidden ">
-  <thead>
-    <tr class="bg-gray-100 border border-slate-200 text-black">
-      <th class="px-4 py-2 text-left">Title</th>
-      <th class="px-4 py-2 text-left">Author</th>
-      <th class="px-4 py-2 text-left">ISBN</th>
-      <th class="px-4 py-2 text-left">Availability</th>
-      <th class="px-4 py-2 text-center">Actions</th>
-    </tr>
-  </thead>
-  
-  <tbody class="bg-white divide-y divide-gray-200">
-  <% if @borrowings.presence %>
-    <% @borrowings.each do |borrowing| %>
-  <% book = borrowing.library_book %> <!-- Extract the associated book -->
-  <tr class="transition border-b border-slate-200 even:bg-slate-50">
-    <td class="px-4 py-2 border-l border-slate-200"><%= book.title %></td>
-    <td class="px-4 py-2"><%= book.author %></td>
-    <td class="px-4 py-2"><%= book.isbn %></td>
-        <td class="px-4 py-2">
-          <% if borrowing.returned? %>
-          <button class="badge badge-success">
-            Available
-          </button>
-          <% else %>
-          <button class="badge badge-warning">
-            Borrowed
-          </button>
+    <% if days_left > 0 %>
+      <span class="text-green-600 font-semibold"><%= "#{days_left} days left" %></span>
+    <% elsif days_left == 0 %>
+      <span class="text-yellow-600 font-semibold">Due today</span>
+    <% else %>
+      <span class="text-red-600 font-semibold"><%= "#{days_left.abs} days overdue" %></span>
+    <% end %>
+  <% else %>
+    <span class="text-gray-500">Not Set</span>
+  <% end %>
+</td>
+
+              <td class="px-4 py-2">
+                <% if borrowing.returned? %>
+                  <button class="badge badge-success">Available</button>
+                <% else %>
+                  <button class="badge badge-warning">Borrowed</button>
+                <% end %>
+              </td>
+              <td class="px-4 py-2 place-items-center border-r border-slate-200">
+                <span class="w-max flex items-center space-x-2.5">
+                  <%= link_to "Show", library_book_path(book), class: "btn btn-secondary" %>
+                  <%= link_to "Edit", edit_library_book_path(book), class: "btn btn-primary" %>
+                  <%= button_to "Delete", library_book_path(book), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-warning" %>
+                </span>
+              </td>
+            </tr>
           <% end %>
-        </td>
-    <td class="px-4 py-2 place-items-center border-r border-slate-200">
-      <span class="w-max flex items-center space-x-2.5">
-        <%= link_to "Show", library_book_path(book), class: "btn btn-secondary" %>
-        <%= link_to "Edit", edit_library_book_path(book), class: "btn btn-primary" %>
-        <%= button_to "Delete", library_book_path(book), method: :delete, data: { confirm: "Are you sure?" }, class: "btn btn-warning" %>
-      </span>
-    </td> 
-  </tr>
-<% end %>
-
-     <% else %>
-     <tr class="hover:bg-gray-50 transition">
-	  	<td class="px-4 py-2 h-50 font-bold text-xl text-slate-500 text-center" colspan="5">No data yet</td>
-     </tr>
-  	<% end %>
-  </tbody>
-</table>
-	 
-
-
-</section>
+        <% else %>
+          <tr class="hover:bg-gray-50 transition">
+            <td class="px-4 py-2 h-50 font-bold text-xl text-slate-500 text-center" colspan="6">No data yet</td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  </section>
 </main>
