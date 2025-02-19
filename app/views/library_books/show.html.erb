@@ -19,10 +19,30 @@
   <%= @library_book.isbn %>
 
     </div>
+    <div class="grid grid-cols-2">
+  <strong>Status:</strong>
+<% if @library_book.available? %>
+          <button class="badge badge-success">
+            Available
+          </button>
+          <% else %>
+          <button class="badge badge-warning">
+            Borrowed
+          </button>
+          <% end %>
+    </div>
     </div>
 <div class="flex items-center justify-between">
+
   <% if @library_book.available? %>
  <%= button_to "Borrow Now", create_borrowings_path(@library_book), class: "btn btn-success"%>
+  <% else %>
+  <% if @library_book.borrowed_by?(Current.user) %>
+  <% if (borrowing = @library_book.borrowings.find_by(user: Current.user, returned: false)) %>
+  <%= button_to "Return Book", destroy_borrowings_path(borrowing), method: :delete, class: "btn btn-warning" %>
+<% end %>
+  
+  <% end %>
   <% end %>
 <%= link_to "Back to List", library_books_path, class: "btn btn-secondary" %>
 </div>

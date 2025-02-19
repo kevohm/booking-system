@@ -6,14 +6,11 @@ Rails.application.routes.draw do
   get "library_books/edit"
   get "library_books/update"
   get "library_books/destroy"
-  get "borrowings/create"
-  get "borrowings/destroy"
   get "user/create"
   resource :session
   resources :user, only: %i[new create]
   resources :passwords, param: :token
   resources :library_books
-  resources :borrowings, only: %i[create destroy]
 
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
@@ -29,6 +26,9 @@ Rails.application.routes.draw do
   delete "logout", to: "sessions#destroy", as: :destroy_session
   delete "library_book/:id", to: "library_books#destroy", as: :destroy_library_book
   post "/borrowings/:library_book_id", to: "borrowings#create", as: :create_borrowings
+  delete "/borrowings/:id", to: "borrowings#destroy", as: :destroy_borrowings
+  get "borrowings/index", to: "borrowings#index"
+
   delete "signup", to: "user#create"
   get "dashboard", to: "library_books#index"
   get "profile", to: "pages#profile"

@@ -10,15 +10,15 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_02_18_154627) do
+ActiveRecord::Schema[8.0].define(version: 2025_02_19_100928) do
   create_table "borrowings", force: :cascade do |t|
     t.integer "user_id", null: false
     t.integer "library_book_id", null: false
     t.date "due_date"
-    t.boolean "returned"
+    t.boolean "returned", default: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.index ["library_book_id"], name: "index_borrowings_on_library_book_id"
+    t.index ["library_book_id"], name: "index_borrowings_on_library_book_id", unique: true, where: "returned IS FALSE"
     t.index ["user_id"], name: "index_borrowings_on_user_id"
   end
 
@@ -28,6 +28,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_154627) do
     t.string "isbn"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.boolean "available", default: true, null: false
     t.index ["isbn"], name: "index_library_books_on_isbn", unique: true
   end
 
@@ -45,7 +46,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_02_18_154627) do
     t.string "password_digest", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "role"
+    t.integer "role", default: 0
     t.index ["email_address"], name: "index_users_on_email_address", unique: true
   end
 

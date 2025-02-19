@@ -3,7 +3,7 @@ class LibraryBooksController < ApplicationController
 
   def index
     @library_books = LibraryBook.all
-
+    logger.debug("Current User: #{current_user.role}")
     @library_books = @library_books.where("title LIKE ?", "%#{params[:title]}%") if params[:title].present?
     @library_books = @library_books.where("author LIKE ?", "%#{params[:author]}%") if params[:author].present?
   end
@@ -16,12 +16,17 @@ class LibraryBooksController < ApplicationController
   end
 
   def create
+    unless current_user&.admin?
+      redirect_to library_books_path, alert: "You are not authorized to add books."
+      return
+    end
+
     @library_book = LibraryBook.new(library_book_params)
-    Rails.logger.debug("Current User: #{Current.session.user}")
+    # Rails.logger.debug("Current User: #{Current.session.user}")
     if @library_book.save
       redirect_to @library_book, notice: "Book was successfully created."
     else
-      render :new, status: :unprocessable_entity
+      render :new
     end
   end
 
@@ -32,7 +37,7 @@ class LibraryBooksController < ApplicationController
     if @library_book.update(library_book_params)
       redirect_to @library_book, notice: "Book was successfully updated."
     else
-      render :edit, status: :unprocessable_entity
+      render :edit
     end
   end
 
