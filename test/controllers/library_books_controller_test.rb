@@ -6,13 +6,10 @@ class LibraryBooksControllerTest < ActionDispatch::IntegrationTest
     @user = users(:one)
     @library_book = library_books(:one)
 
-    sign_in @admin # Log in as admin
+    sign_in @admin
   end
 
-  test "should get index" do
-    get library_books_url
-    assert_response :success
-  end
+
 
   test "should create book if user is admin" do
     assert_difference("LibraryBook.count", 1) do

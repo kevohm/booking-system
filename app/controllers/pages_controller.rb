@@ -1,11 +1,11 @@
 class PagesController < ApplicationController
-  allow_unauthenticated_access only: :home
+  # allow_unauthenticated_access only: :home
   def home
-    redirect_to library_books_path if authenticated?
+    # redirect_to library_books_path if authenticated?
   end
-  def dashboard
-    redirect_to new_session_path unless authenticated?
-  end
+  # def dashboard
+  #   redirect_to new_session_path unless authenticated?
+  # end
   def profile
     redirect_to new_session_path unless authenticated?
 

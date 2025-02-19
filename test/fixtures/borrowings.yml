@@ -1,13 +1,11 @@
-# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
-
 one:
   user: one
   library_book: one
-  due_date: 2025-02-18
+  due_date: <%= 2.days.from_now.to_date %>  # Dynamic due date
   returned: false
 
 two:
   user: two
   library_book: two
-  due_date: 2025-02-18
+  due_date: <%= 5.days.from_now.to_date %>  # Different due date
   returned: false
