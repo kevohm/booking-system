@@ -10,7 +10,13 @@
 
 User.create!(
   email_address: 'admin@example.com',
-  password: 'securepassword',
-  password_confirmation: 'securepassword',
+  password: 'password',
+  password_confirmation: 'password',
   role: 1
+)
+User.create!(
+  email_address: 'user@example.com',
+  password: 'password',
+  password_confirmation: 'password',
+  role: 0
 )
